@@ -9,40 +9,42 @@ In each module folder, you'll see a set of notebooks. A link to the LangChain Ac
 
 ## Setup
 
+This fork uses [uv](https://docs.astral.sh/uv/) to manage the Python environment and dependencies. If you don't have uv installed yet, see the [uv install instructions](https://docs.astral.sh/uv/getting-started/installation/) (e.g., `curl -LsSf https://astral.sh/uv/install.sh | sh` on macOS/Linux, or `winget install --id=astral-sh.uv` on Windows).
+
 ### Python version
 
-Make sure you're using Python version 3.11, 3.12, or 3.13.
+The course supports Python 3.11, 3.12, or 3.13. uv can install a matching interpreter for you — no system Python required:
 ```
-python3 --version
+uv python install 3.12
 ```
 
 ### Clone repo
 ```
 git clone https://github.com/langchain-ai/langchain-academy.git
-$ cd langchain-academy
+cd langchain-academy
 ```
 Or, if you prefer, you can download a zip file [here](https://github.com/langchain-ai/langchain-academy/archive/refs/heads/main.zip).
 
 ### Create an environment and install dependencies
 #### Mac/Linux/WSL
 ```
-$ python3 -m venv lc-academy-env
-$ source lc-academy-env/bin/activate
-$ pip install -r requirements.txt
+$ uv venv --python 3.12 .venv
+$ source .venv/bin/activate
+$ uv pip install -r requirements.txt
 ```
 #### Windows Powershell
 ```
-PS> python3 -m venv lc-academy-env
-PS> Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
-PS> .\lc-academy-env\Scripts\Activate.ps1
-PS> pip install -r requirements.txt
+PS> uv venv --python 3.12 .venv
+PS> .\.venv\Scripts\Activate.ps1
+PS> uv pip install -r requirements.txt
 ```
 
 ### Running notebooks
-If you don't have Jupyter set up, follow the installation instructions [here](https://jupyter.org/install).
+Jupyter is included in `requirements.txt`, so it's already in your `.venv`. Launch it with uv (no separate install needed):
 ```
-$ jupyter notebook
+$ uv run jupyter notebook
 ```
+You can also use `uv run` to invoke any other CLI from this environment (e.g., `uv run langgraph dev`) without manually activating the venv.
 
 ### Setting up env variables
 
@@ -90,8 +92,9 @@ PS> $env:ANTHROPIC_API_KEY = "your-api-key-here"
 * To start the local development server, make sure your virtual environment is active and run the following command in your terminal in the `/studio` directory in each module:
 
 ```
-langgraph dev
+uv run langgraph dev
 ```
+(Or `langgraph dev` directly if the `.venv` is already activated.)
 
 You should see the following output:
 ```
