@@ -45,33 +45,41 @@ $ jupyter notebook
 ```
 
 ### Setting up env variables
-Briefly going over how to set up environment variables. 
+
+This fork uses a single `.env` file at the repo root. A template is provided in [`.env.template`](.env.template) — copy it and fill in your keys:
+
+```
+cp .env.template .env
+```
+
+Then open `.env` in your editor and replace the placeholder values. `.env` is listed in `.gitignore`, so your real keys will never be committed.
+
+The notebooks read variables from the environment with `os.environ` (and prompt interactively via `getpass` if a key is missing). If you prefer, you can also export them in your shell:
+
 #### Mac/Linux/WSL
 ```
-$ export API_ENV_VAR="your-api-key-here"
+$ export ANTHROPIC_API_KEY="your-api-key-here"
 ```
 #### Windows Powershell
 ```
-PS> $env:API_ENV_VAR = "your-api-key-here"
+PS> $env:ANTHROPIC_API_KEY = "your-api-key-here"
 ```
 
-### Set OpenAI API key
-* If you don't have an OpenAI API key, you can sign up [here](https://openai.com/index/openai-api/).
-*  Set `OPENAI_API_KEY` in your environment 
+### Set Anthropic API key (required)
+* This fork uses Anthropic's Claude models (`claude-sonnet-4-6` by default) via the [`langchain-anthropic`](https://docs.langchain.com/oss/python/integrations/chat/anthropic) integration.
+* If you don't have an Anthropic API key, you can sign up [here](https://console.anthropic.com/).
+* Set `ANTHROPIC_API_KEY` in your `.env` file.
 
-### Sign up and Set LangSmith API
-* Sign up for LangSmith [here](https://docs.langchain.com/langsmith/create-account-api-key#create-an-account-and-api-key), find out more about LangSmith and how to use it within your workflow [here](https://www.langchain.com/langsmith). 
-*  Set `LANGSMITH_API_KEY`, `LANGSMITH_TRACING_V2="true"` `LANGSMITH_PROJECT="langchain-academy"`in your environment 
-*  If you are on the EU instance also set `LANGSMITH_ENDPOINT`="https://eu.api.smith.langchain.com" as well.
+### Sign up and Set LangSmith API (recommended)
+* Sign up for LangSmith [here](https://docs.langchain.com/langsmith/create-account-api-key#create-an-account-and-api-key); find out more about LangSmith and how to use it within your workflow [here](https://www.langchain.com/langsmith).
+* Set `LANGSMITH_API_KEY`, `LANGSMITH_TRACING_V2="true"`, `LANGSMITH_PROJECT="langchain-academy"` in your `.env` file.
+* If you are on the EU instance also set `LANGSMITH_ENDPOINT="https://eu.api.smith.langchain.com"`.
 
-### Set up Tavily API for web search
+### Set up Tavily API for web search (optional)
 
-* Tavily Search API is a search engine optimized for LLMs and RAG, aimed at efficient, 
-quick, and persistent search results. 
-* You can sign up for an API key [here](https://tavily.com/). 
-It's easy to sign up and offers a very generous free tier. Some lessons (in Module 4) will use Tavily. 
-
-* Set `TAVILY_API_KEY` in your environment.
+* Tavily Search API is a search engine optimized for LLMs and RAG, aimed at efficient, quick, and persistent search results.
+* You can sign up for an API key [here](https://tavily.com/). It's easy to sign up and offers a very generous free tier. Some lessons (in Module 4) will use Tavily.
+* Set `TAVILY_API_KEY` in your `.env` file.
 
 ### Set up Studio
 
@@ -94,12 +102,12 @@ You should see the following output:
 
 Open your browser and navigate to the Studio UI: `https://smith.langchain.com/studio/?baseUrl=http://127.0.0.1:2024`.
 
-* To use Studio, you will need to create a .env file with the relevant API keys
-* Run this from the command line to create these files for module 1 to 5, as an example:
+* To use Studio, you will need a `.env` file inside each `module-x/studio/` directory with the relevant API keys.
+* Run this from the command line to create those files for modules 1 to 5 from your root `.env` (assumes `ANTHROPIC_API_KEY` and `TAVILY_API_KEY` are exported in your shell — e.g., `set -a; source .env; set +a`):
 ```
 for i in {1..5}; do
   cp module-$i/studio/.env.example module-$i/studio/.env
-  echo "OPENAI_API_KEY=\"$OPENAI_API_KEY\"" > module-$i/studio/.env
+  echo "ANTHROPIC_API_KEY=\"$ANTHROPIC_API_KEY\"" > module-$i/studio/.env
 done
 echo "TAVILY_API_KEY=\"$TAVILY_API_KEY\"" >> module-4/studio/.env
 ```
